@@ -1,0 +1,685 @@
+/*-----------------------\
+   Hitmarkers by Tekish
+\-----------------------*/
+
+#library "hitmarkers"
+#include "zcommon.acs"
+
+#define HM_ANIM_DEFAULT		9
+#define HM_ANIM_IMPACT		15
+#define HM_BASECOLOR		CR_UNTRANSLATED
+#define HM_FLAGS			HUDMSG_FADEOUT | HUDMSG_ALPHA | HUDMSG_NOTWITHFULLMAP | HUDMSG_NOTWITHOVERLAYMAP
+#define HM_ID				160400
+#define HM_REFRESH			1
+#define HM_SOUNDLIMIT		4
+#define HM_TICRATE			35
+#define HM_TIME				(HM_REFRESH << 16) / HM_TICRATE + 1
+
+int animhitspeed, animhitstyle, animkillspeed, animkillstyle, sounddelay;
+int animhitstate = -1, animkillstate = -1;
+str animdefault[HM_ANIM_DEFAULT] = { "A", "B", "C", "D", "E", "F", "G", "H", "I" };
+str animimpact[HM_ANIM_IMPACT] = { "A", "B", "C", "D", "E", "E", "E", "E", "E", "E", "E", "F", "G", "H", "I" };
+
+/*------------\
+   Functions
+\------------*/
+
+function void animationhandler(void)
+{
+	int animhitmaximum, animkillmaximum;
+
+	if (animhitstate >= 0)
+	{
+		if (styletype(animhitstyle, 2))
+			animhitmaximum = HM_ANIM_DEFAULT;
+		else if (styletype(animhitstyle, 3))
+			animhitmaximum = HM_ANIM_IMPACT;
+
+		if (animhitstate < animhitmaximum - HM_REFRESH * animhitspeed)
+		{
+			animhitstate = animhitstate + HM_REFRESH * animhitspeed;
+			renderhit(1, true);
+		}
+		else
+		{
+			animhitstate = -1;
+		}
+	}
+
+	if (animkillstate >= 0)
+	{
+		if (styletype(animkillstyle, 2))
+			animkillmaximum = HM_ANIM_DEFAULT;
+		else if (styletype(animkillstyle, 3))
+			animkillmaximum = HM_ANIM_IMPACT;
+
+		if (animkillstate < animkillmaximum - HM_REFRESH * animkillspeed)
+		{
+			animkillstate = animkillstate + HM_REFRESH * animkillspeed;
+			renderhit(2, true);
+		}
+		else
+		{
+			animkillstate = -1;
+		}
+	}
+}
+
+function void decrementdelay(void)
+{
+	if (sounddelay)
+		sounddelay = sounddelay - HM_REFRESH;
+}
+
+function int getcolor(int color)
+{
+	switch (color)
+	{
+		case 1: // Blue
+			color = CR_LIGHTBLUE;
+			break;
+
+		case 2: // Brown
+			color = CR_DARKBROWN; 
+			break;
+
+		case 3:
+			color = CR_CREAM;
+			break;	
+
+		case 4:
+			color = CR_CYAN;
+			break;
+
+		case 5: // Dark Gray
+			color = CR_BLACK;
+			break;
+
+		case 6:
+			color = CR_DARKGREEN;
+			break;
+
+		case 7:
+			color = CR_DARKRED;
+			break;
+
+		case 8: // Gray
+			color = CR_DARKGRAY;
+			break;
+
+		case 9:
+			color = CR_GREEN;
+			break;
+
+		case 10:
+			color = CR_OLIVE;
+			break;
+
+		case 11:
+			color = CR_ORANGE;
+			break;
+
+		case 12: // Pink
+			color = CR_BRICK;
+			break;
+
+		case 13:
+			color = CR_PURPLE;
+			break;
+
+		case 14:
+			color = CR_RED;
+			break;
+
+		case 15:
+			color = CR_SAPPHIRE;
+			break;
+
+		case 16:
+			color = CR_TEAL;
+			break;
+
+		case 17:
+			color = CR_WHITE;
+			break;
+
+		case 18:
+			color = CR_YELLOW;
+	}
+
+	return color;
+}
+
+function str hitdamage(str sound)
+{
+	if (getcvar("hm_hitdamage"))
+	{
+		int damage = getcvar("hm_bridge_damage");
+		int hitdamagehigh = getcvar("hm_hitdamagehigh");
+		int hitdamagemedium = getcvar("hm_hitdamagemedium");
+		str type = "";
+
+		if (hitdamagehigh < 1 || hitdamagehigh > 1000)
+			hitdamagehigh = 75;
+
+		if (hitdamagemedium < 1 || hitdamagemedium > 1000)
+			hitdamagemedium = 25;
+
+		if (damage >= hitdamagehigh)
+			type = "high";
+		else if (damage >= hitdamagemedium)
+			type = "medium";
+
+		sound = strparam(s:sound, s:type);
+	}
+
+	return sound;
+}
+
+function void renderhit(int hitmarker, bool force)
+{
+	bool animation;
+	int statusbar, style, x, y;
+	int color = HM_BASECOLOR;
+	int height = getscreenheight();
+	int id = HM_ID + 1;
+	int width = getscreenwidth();
+	str font = "", type = "A";
+
+	if (getcvar("screenblocks") < 11)
+		statusbar = height - scriptcall("hitmarkersbridge", "gettop");
+
+	x = (fixeddiv(width << 16, 2.0) >> 16) << 16;
+	y = (fixeddiv(height - statusbar << 16, 2.0) >> 16) << 16;
+
+	int fade = getcvar("hm_fade");
+
+	if (fade < 0.1 || fade > 1.5)
+		fade = 0.75;
+
+	bool killpriority = getcvar("hm_killpriority");
+
+	int opacity = getcvar("hm_opacity");
+
+	if (opacity < 10 || opacity > 100)
+		opacity = 100;
+
+	opacity = fixeddiv(opacity << 16, 100.0);
+
+	if (!force)
+	{
+		if (hitmarker == 2)
+		{
+			int killstyle = getcvar("hm_killstyle");
+
+			if (styletype(killstyle, 0))
+				style = killstyle;
+		}
+		else
+		{
+			int hitstyle = getcvar("hm_hitstyle");
+
+			if (styletype(hitstyle, 0))
+				style = hitstyle;
+		}
+
+		switch (style)
+		{
+			case 1:
+				animation = true;
+				break;
+
+			case 2:
+				animation = true;
+				break;
+
+			case 3:
+				font = "hitmarksmall";
+				break;
+
+			case 4:
+				animation = true;
+				break;
+
+			case 5:
+				animation = true;
+				break;
+
+			case 6:
+				font = "hitmarkcircle";
+				break;
+
+			case 7:
+				font = "hitmarkcirclesmall";
+				break;
+
+			case 8:
+				font = "hitmarkvertical";
+				break;
+
+			case 9:
+				font = "hitmarkverticalsmall";
+				break;
+
+			case 10:
+				animation = true;
+				break;
+
+			case 11:
+				animation = true;
+				break;
+
+			default:
+				font = "hitmark";
+		}
+	}
+	else
+	{
+		animation = true;
+
+		if (hitmarker == 2)
+		{
+			if (styletype(animkillstyle, 2))
+				type = animdefault[animkillstate];
+
+			if (styletype(animkillstyle, 3))
+				type = animimpact[animkillstate];
+
+			style = animkillstyle;
+		}
+		else
+		{
+			if (styletype(animhitstyle, 2))
+				type = animdefault[animhitstate];
+
+			if (styletype(animhitstyle, 3))
+				type = animimpact[animhitstate];
+
+			style = animhitstyle;
+		}
+	}
+
+	if (hitmarker == 2)
+	{
+		int killcolor = getcvar("hm_killcolor");
+
+		if (killcolor < 0 || killcolor > 18)
+			killcolor = 0;
+	}
+
+	if (animation)
+	{
+		bool hitspeed = getcvar("hm_hitspeed");
+
+		if (hitmarker == 2)
+		{
+			switch (style)
+			{
+				case 1:
+					if (!killcolor)
+						font = "hitmarkanimatedkill";
+					else
+						font = "hitmarkanimated";
+					break;
+
+				case 2:
+					if (!killcolor)
+						font = "hitmarkanimatedkillreverse";
+					else
+						font = "hitmarkanimatedreverse";
+					break;
+
+				case 4:
+					if (!killcolor)
+						font = "hitmarkanimatedsmallkill";
+					else
+						font = "hitmarkanimatedsmall";
+					break;
+
+				case 5:
+					if (!killcolor)
+						font = "hitmarkanimatedsmallkillreverse";
+					else
+						font = "hitmarkanimatedsmallreverse";
+					break;
+
+				case 10:
+					if (!killcolor)
+						font = "hitmarkimpactkill";
+					else
+						font = "hitmarkimpact";
+					break;
+
+				case 11:
+					if (!killcolor)
+						font = "hitmarkimpactsmallkill";
+					else
+						font = "hitmarkimpactsmall";
+			}
+
+			if (!force)
+			{
+				if (hitspeed && !styletype(style, 3))
+					animkillspeed = 2;
+				else
+					animkillspeed = 1;
+
+				animkillstate = 0;
+				animkillstyle = style;
+			}
+		}
+		else
+		{
+			switch (style)
+			{
+				case 1:
+					font = "hitmarkanimated";
+					break;
+
+				case 2:
+					font = "hitmarkanimatedreverse";
+					break;
+
+				case 4:
+					font = "hitmarkanimatedsmall";
+					break;
+
+				case 5:
+					font = "hitmarkanimatedsmallreverse";
+					break;
+
+				case 10:
+					font = "hitmarkimpact";
+					break;
+
+				case 11:
+					font = "hitmarkimpactsmall";
+			}
+
+			if (!force)
+			{
+				if (hitspeed && !styletype(style, 3))
+					animhitspeed = 2;
+				else
+					animhitspeed = 1;
+
+				animhitstate = 0;
+				animhitstyle = style;
+
+				if (!killpriority)
+					animkillstate = -1;
+			}
+		}
+
+		if (styletype(style, 2))
+		{
+			fade = getcvar("hm_fadeanimated");
+
+			if (fade < 0.1 || fade > 1.5)
+				fade = 0.35;
+		}
+		else if (styletype(style, 3))
+		{
+			fade = 0;
+		}
+	}
+
+	if (hitmarker == 2)
+	{
+		if (killcolor)
+			color = getcolor(killcolor);
+		else if (!animation)
+			type = "B";
+
+		if (killpriority)
+		{
+			if (animation)
+				animhitstate = -1;
+
+			hudmessage(d:0; HUDMSG_PLAIN, id, HM_BASECOLOR, 0, 0, 1873);
+			id = HM_ID;
+		}
+		else 
+		{
+			animhitstate = -1;
+		}
+	}
+	else
+	{
+		int hitcolor = getcvar("hm_hitcolor");
+
+		if (hitcolor < 0 || hitcolor > 18)
+			hitcolor = 0;
+
+		if (hitcolor)
+			color = getcolor(hitcolor);
+	}
+
+	int size = getcvar("hm_size");
+
+	if (size == 1 || size == 2)
+		font = strparam(s:font, d:size + 1);
+
+	setfont(font);
+	sethudsize(width, height, true);
+	hudmessage(s:type; HM_FLAGS, id, color, x, y, HM_TIME, fade, opacity);
+}
+
+function str soundlimit(str sound)
+{
+	if (getcvar("hm_soundlimit"))
+	{
+		if (sounddelay)
+			sound = "";
+		else
+			sounddelay = HM_SOUNDLIMIT;
+	}
+
+	return sound;
+}
+
+function bool styletype(int style, int type)
+{
+	bool match;
+	int total = 12;
+
+	int styles[4][12] =
+	{
+		{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 },			// 0 - All
+		{ 0, 3, 6, 7, 8, 9, -1, -1, -1, -1, -1, -1 },		// 1 - Not Animated
+		{ 1, 2, 4, 5, -1, -1, -1, -1, -1, -1, -1, -1 },		// 2 - Animated Default
+		{ 10, 11, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }	// 3 - Impact
+	};
+
+	for (int i = 0; i < total; i++)
+	{
+		if (styles[type][i] == style)
+			match = true;
+
+		if (match || styles[type][i] == -1)
+			break;
+	}
+
+	return match;
+}
+
+/*-------\
+   Core
+\-------*/
+
+function void hitmarkers(void)
+{
+	bool hitsounds = getcvar("hm_hitsounds");
+	bool killsounds = getcvar("hm_killsounds");
+	bool showhitmarkers = getcvar("hm_showhitmarkers");
+	bool showkillmarkers = getcvar("hm_showkillmarkers");
+	int hitmarker = getcvar("hm_bridge_hitmarker");
+
+	if (getcvar("hm_enabled") && hitmarker && (hitsounds || killsounds || showhitmarkers || showkillmarkers))
+	{
+		int channel;
+		str hitsound = "", killsound = "", sound = "";
+
+		int hitsoundid = getcvar("hm_hitsound");
+		int volume = getcvar("hm_volume");
+
+		if (volume < 1 || volume > 100)
+			volume = 100;
+
+		volume = fixeddiv(volume << 16, 100.0);
+
+		if (hitsounds)
+		{
+			switch (hitsoundid)
+			{
+				case 1:
+					sound = "blackops4hit";
+					break;
+
+				case 2:
+					sound = "callofduty4hit";
+					break;
+
+				case 3:
+					sound = "doomhit";
+					break;
+
+				case 4:
+					sound = "overwatchhit";
+					break;
+
+				case 5:
+					sound = hitdamage("quakehit");
+					break;
+
+				case 6:
+					sound = "teamfortress2hit";
+					break;
+
+				case 7:
+					sound = "modernwarfarehit";
+					break;
+
+				case 8:
+					sound = "blackopscoldwarhit";
+					break;
+
+				default:
+					sound = hitdamage("defaulthit");
+			}
+
+			channel = CHAN_VOICE;
+			sound = soundlimit(sound);
+		}
+
+		if (hitmarker == 2)
+		{
+			if (killsounds)
+			{
+				int killsoundid = getcvar("hm_killsound");
+
+				switch (killsoundid)
+				{
+					case 1:
+						sound = "blackops4kill";
+						break;
+
+					case 2:
+						sound = "overwatchkill";
+						break;
+
+					case 3:
+						sound = "quakechampionskill";
+						break;
+
+					case 4:
+						sound = "teamfortress2kill";
+						break;
+
+					case 5:
+						sound = "titanfall2kill";
+						break;
+
+					case 6:
+						sound = "quakelivekill";
+						break;
+
+					case 7:
+						sound = "modernwarfarekill";
+						break;
+
+					case 8:
+						sound = "blackopscoldwarkill";
+						break;
+
+					default:
+						sound = "defaultkill";
+				}
+
+				channel = CHAN_AUTO;
+			}
+
+			if (showkillmarkers)
+			{
+				renderhit(hitmarker, false);
+				hitmarker = 0;
+			}
+			else
+			{
+				hitmarker = 1;
+			}
+		}
+
+		if (hitmarker && showhitmarkers)
+			renderhit(hitmarker, false);
+
+		if (strcmp(sound, ""))
+			playsound(0, sound, channel | CHAN_UI, volume, false, ATTN_NONE);
+
+		if (getcvar("hm_hitdamage") && (!hitsoundid || hitsoundid == 5))
+			setcvar("hm_bridge_damage", 0);
+
+		setcvar("hm_bridge_hitmarker", 0);
+	}
+}
+
+script "hitmarkers" (void)
+{
+	animationhandler();
+	decrementdelay();
+	hitmarkers();
+	delay(HM_REFRESH);
+	restart;
+}
+
+script "hitmarkersdeath" DEATH
+{
+	if (playernumber() != scriptcall("hitmarkersbridge", "getconsoleplayer"))
+		terminate;
+
+	acs_namedterminate("hitmarkers", 0);
+}
+
+script "hitmarkersenter" ENTER
+{
+	if (playernumber() != scriptcall("hitmarkersbridge", "getconsoleplayer"))
+		terminate;
+
+	if (!strcmp("TITLEMAP", strparam(n:PRINTNAME_LEVEL)))
+		terminate;
+
+	acs_namedexecute("hitmarkers", 0);
+}
+
+script "hitmarkersrespawn" RESPAWN
+{
+	if (playernumber() != scriptcall("hitmarkersbridge", "getconsoleplayer"))
+		terminate;
+
+	if (!strcmp("TITLEMAP", strparam(n:PRINTNAME_LEVEL)))
+		terminate;
+
+	setcvar("hm_bridge_damage", 0);
+	setcvar("hm_bridge_hitmarker", 0);
+	acs_namedexecute("hitmarkers", 0);
+}

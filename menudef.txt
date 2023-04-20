@@ -1,0 +1,130 @@
+AddOptionMenu "OptionsMenu"
+{
+	Submenu "HitMarkers Options", "HM_Options"
+}
+
+OptionMenu "HM_Options"
+{
+	Title "HitMarkers Options"
+	Option "Enable HitMarkers", "hm_enabled", "HM_YesNo"
+	StaticText ""
+	StaticText "Hit Marker Options", 1
+	Option "Show Hit Markers", "hm_showhitmarkers", "HM_YesNo"
+	Option "Hit Animation Speed", "hm_hitspeed", "HM_Speed"
+	Option "Hit Marker Color", "hm_hitcolor", "HM_Color"
+	Option "Hit Marker Style", "hm_hitstyle", "HM_Style"
+	Option "Show Kill Markers", "hm_showkillmarkers", "HM_YesNo"
+	Option "Kill Animation Speed", "hm_killspeed", "HM_Speed"
+	Option "Kill Marker Color", "hm_killcolor", "HM_Color"
+	Option "Kill Marker Priority", "hm_killpriority", "HM_YesNo"
+	Option "Kill Marker Style", "hm_killstyle", "HM_Style"
+	Option "Size Adjustment", "hm_size", "HM_Size"
+	Slider "Animated Fade Time", "hm_fadeanimated", 0.1, 1.5, 0.1, 2
+	Slider "Non-Animated Fade Time", "hm_fade", 0.1, 1.5, 0.1, 2
+	Slider "Opacity Percentage", "hm_opacity", 10, 100, 1, 0
+	StaticText ""
+	StaticText "Hit Sound Options", 1
+	StaticText "Hit sounds function independently from"
+	StaticText "hit markers. You can customize the sounds"
+	StaticText "for both standard impacts and enemy kills."
+	StaticText ""
+	Option "Use Hit Sounds", "hm_hitsounds", "HM_YesNo"
+	Option "Hit Sound Type", "hm_hitsound", "HM_HitSound"
+	Option "Use Kill Sounds", "hm_killsounds", "HM_YesNo"
+	Option "Kill Sound Type", "hm_killsound", "HM_KillSound"
+	Option "Limit Rapid Sounds", "hm_soundlimit", "HM_YesNo"
+	Slider "Volume Percentage", "hm_volume", 1, 100, 1, 0
+	StaticText ""
+	StaticText "Hit Damage Options", 1
+	StaticText "You can modify the type of hit sounds"
+	StaticText "that play based on the amount of damage"
+	StaticText "done to enemies."
+	StaticText ""
+	Option "Use Damage Hit Sounds", "hm_hitdamage", "HM_YesNo"
+	Slider "High Damage Hit", "hm_hitdamagehigh", 1, 1000, 1, 0
+	Slider "Medium Damage Hit", "hm_hitdamagemedium", 1, 1000, 1, 0
+}
+
+OptionValue "HM_Color"
+{
+	0, "Default"
+	1, "Blue"
+	2, "Brown"
+	3, "Cream"
+	4, "Cyan"
+	5, "Dark Gray"
+	6, "Dark Green"
+	7, "Dark Red"
+	8, "Gray"
+	9, "Green"
+	10, "Olive"
+	11, "Orange"
+	12, "Pink"
+	13, "Purple"
+	14, "Red"
+	15, "Sapphire"
+	16, "Teal"
+	17, "White"
+	18, "Yellow"
+}
+
+OptionValue "HM_HitSound"
+{
+	0, "Default"
+	2, "Call of Duty 4"
+	1, "Call of Duty: Black Ops 4"
+	8, "Call of Duty: Black Ops Cold War"
+	7, "Call of Duty: Modern Warfare"
+	3, "Doom (2016)"
+	4, "Overwatch"
+	5, "Quake"
+	6, "Team Fortress 2"
+}
+
+OptionValue "HM_KillSound"
+{
+	0, "Default"
+	1, "Call of Duty: Black Ops 4"
+	8, "Call of Duty: Black Ops Cold War"
+	7, "Call of Duty: Modern Warfare"
+	2, "Overwatch"
+	3, "Quake Champions"
+	6, "Quake Live"
+	4, "Team Fortress 2"
+	5, "Titanfall 2"
+}
+
+OptionValue "HM_Size"
+{
+	0, "None"
+	1, "Double"
+	2, "Triple"
+}
+
+OptionValue "HM_Speed"
+{
+	0, "Default"
+	1, "Double"
+}
+
+OptionValue "HM_Style"
+{
+	0, "Default"
+	1, "Default (Animated)"
+	2, "Default (Animated, Reverse)"
+	6, "Circular"
+	7, "Circular (Small)"
+	10, "Impact (Animated)"
+	11, "Impact (Animated, Small)"
+	3, "Small"
+	4, "Small (Animated)"
+	5, "Small (Animated, Reverse)"
+	8, "Vertical"
+	9, "Vertical (Small)"
+}
+
+OptionValue "HM_YesNo"
+{
+	0, "No"
+	1, "Yes"
+}

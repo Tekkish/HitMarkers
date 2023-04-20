@@ -1,0 +1,12 @@
+HitMarkers utilizes sounds from the following games:
+
+- Call of Duty 4: Modern Warfare by Infinity Ward
+- Call of Duty: Black Ops 4 by Treyarch
+- Call of Duty: Black Ops Cold War by Treyarch
+- Call of Duty: Modern Warfare by Infinity Ward
+- Doom (2016) by id Software
+- Overwatch by Blizzard Entertainment
+- Quake Champions by id Software
+- Quake Live by id Software
+- Team Fortress 2 by Valve
+- Titanfall 2 by Respawn Entertainment

@@ -1,0 +1,575 @@
+hitmark
+{
+	A HMXA
+	B HMXKA
+}
+
+hitmark2
+{
+	A HMXA2
+	B HMXKA2
+}
+
+hitmark3
+{
+	A HMXA3
+	B HMXKA3
+}
+
+hitmarkanimated
+{
+	A HMXA
+	B HMXB
+	C HMXC
+	D HMXD
+	E HMXE
+	F HMXF
+	G HMXG
+	H HMXH
+	I HMXI
+}
+
+hitmarkanimated2
+{
+	A HMXA2
+	B HMXB2
+	C HMXC2
+	D HMXD2
+	E HMXE2
+	F HMXF2
+	G HMXG2
+	H HMXH2
+	I HMXI2
+}
+
+hitmarkanimated3
+{
+	A HMXA3
+	B HMXB3
+	C HMXC3
+	D HMXD3
+	E HMXE3
+	F HMXF3
+	G HMXG3
+	H HMXH3
+	I HMXI3
+}
+
+hitmarkanimatedkill
+{
+	A HMXKA
+	B HMXKB
+	C HMXKC
+	D HMXKD
+	E HMXKE
+	F HMXKF
+	G HMXKG
+	H HMXKH
+	I HMXKI
+}
+
+hitmarkanimatedkill2
+{
+	A HMXKA2
+	B HMXKB2
+	C HMXKC2
+	D HMXKD2
+	E HMXKE2
+	F HMXKF2
+	G HMXKG2
+	H HMXKH2
+	I HMXKI2
+}
+
+hitmarkanimatedkill3
+{
+	A HMXKA3
+	B HMXKB3
+	C HMXKC3
+	D HMXKD3
+	E HMXKE3
+	F HMXKF3
+	G HMXKG3
+	H HMXKH3
+	I HMXKI3
+}
+
+hitmarkanimatedreverse
+{
+	A HMXI
+	B HMXH
+	C HMXG
+	D HMXF
+	E HMXE
+	F HMXD
+	G HMXC
+	H HMXB
+	I HMXA
+}
+
+hitmarkanimatedreverse2
+{
+	A HMXI2
+	B HMXH2
+	C HMXG2
+	D HMXF2
+	E HMXE2
+	F HMXD2
+	G HMXC2
+	H HMXB2
+	I HMXA2
+}
+
+hitmarkanimatedreverse3
+{
+	A HMXI3
+	B HMXH3
+	C HMXG3
+	D HMXF3
+	E HMXE3
+	F HMXD3
+	G HMXC3
+	H HMXB3
+	I HMXA3
+}
+
+hitmarkanimatedkillreverse
+{
+	A HMXKI
+	B HMXKH
+	C HMXKG
+	D HMXKF
+	E HMXKE
+	F HMXKD
+	G HMXKC
+	H HMXKB
+	I HMXKA
+}
+
+hitmarkanimatedkillreverse2
+{
+	A HMXKI2
+	B HMXKH2
+	C HMXKG2
+	D HMXKF2
+	E HMXKE2
+	F HMXKD2
+	G HMXKC2
+	H HMXKB2
+	I HMXKA2
+}
+
+hitmarkanimatedkillreverse3
+{
+	A HMXKI3
+	B HMXKH3
+	C HMXKG3
+	D HMXKF3
+	E HMXKE3
+	F HMXKD3
+	G HMXKC3
+	H HMXKB3
+	I HMXKA3
+}
+
+hitmarkcircle
+{
+	A HMC
+	B HMCK
+}
+
+hitmarkcircle2
+{
+	A HMC2
+	B HMCK2
+}
+
+hitmarkcircle3
+{
+	A HMC3
+	B HMCK3
+}
+
+hitmarkcirclesmall
+{
+	A HMCS
+	B HMCSK
+}
+
+hitmarkcirclesmall2
+{
+	A HMCS2
+	B HMCSK2
+}
+
+hitmarkcirclesmall3
+{
+	A HMCS3
+	B HMCSK3
+}
+
+hitmarkimpact
+{
+	A HMXI
+	B HMXG
+	C HMXE
+	D HMXC
+	E HMXA
+	F HMIA
+	G HMIB
+	H HMIC
+	I HMID
+}
+
+hitmarkimpact2
+{
+	A HMXI2
+	B HMXG2
+	C HMXE2
+	D HMXC2
+	E HMXA2
+	F HMIA2
+	G HMIB2
+	H HMIC2
+	I HMID2
+}
+
+hitmarkimpact3
+{
+	A HMXI3
+	B HMXG3
+	C HMXE3
+	D HMXC3
+	E HMXA3
+	F HMIA3
+	G HMIB3
+	H HMIC3
+	I HMID3
+}
+
+hitmarkimpactkill
+{
+	A HMXKI
+	B HMXKG
+	C HMXKE
+	D HMXKC
+	E HMXKA
+	F HMIKA
+	G HMIKB
+	H HMIKC
+	I HMIKD
+}
+
+hitmarkimpactkill2
+{
+	A HMXKI2
+	B HMXKG2
+	C HMXKE2
+	D HMXKC2
+	E HMXKA2
+	F HMIKA2
+	G HMIKB2
+	H HMIKC2
+	I HMIKD2
+}
+
+hitmarkimpactkill3
+{
+	A HMXKI3
+	B HMXKG3
+	C HMXKE3
+	D HMXKC3
+	E HMXKA3
+	F HMIKA3
+	G HMIKB3
+	H HMIKC3
+	I HMIKD3
+}
+
+hitmarkimpactsmall
+{
+	A HMSI
+	B HMSG
+	C HMSE
+	D HMSC
+	E HMSA
+	F HMISA
+	G HMISB
+	H HMISC
+	I HMISD
+}
+
+hitmarkimpactsmall2
+{
+	A HMSI2
+	B HMSG2
+	C HMSE2
+	D HMSC2
+	E HMSA2
+	F HMISA2
+	G HMISB2
+	H HMISC2
+	I HMISD2
+}
+
+hitmarkimpactsmall3
+{
+	A HMSI3
+	B HMSG3
+	C HMSE3
+	D HMSC3
+	E HMSA3
+	F HMISA3
+	G HMISB3
+	H HMISC3
+	I HMISD3
+}
+
+hitmarkimpactsmallkill
+{
+	A HMSKI
+	B HMSKG
+	C HMSKE
+	D HMSKC
+	E HMSKA
+	F HMISKA
+	G HMISKB
+	H HMISKC
+	I HMISKD
+}
+
+hitmarkimpactsmallkill2
+{
+	A HMSKI2
+	B HMSKG2
+	C HMSKE2
+	D HMSKC2
+	E HMSKA2
+	F HMISKA2
+	G HMISKB2
+	H HMISKC2
+	I HMISKD2
+}
+
+hitmarkimpactsmallkill3
+{
+	A HMSKI3
+	B HMSKG3
+	C HMSKE3
+	D HMSKC3
+	E HMSKA3
+	F HMISKA3
+	G HMISKB3
+	H HMISKC3
+	I HMISKD3
+}
+
+hitmarksmall
+{
+	A HMSA
+	B HMSKA
+}
+
+hitmarksmall2
+{
+	A HMSA2
+	B HMSKA2
+}
+
+hitmarksmall3
+{
+	A HMSA3
+	B HMSKA3
+}
+
+hitmarkanimatedsmall
+{
+	A HMSA
+	B HMSB
+	C HMSC
+	D HMSD
+	E HMSE
+	F HMSF
+	G HMSG
+	H HMSH
+	I HMSI
+}
+
+hitmarkanimatedsmall2
+{
+	A HMSA2
+	B HMSB2
+	C HMSC2
+	D HMSD2
+	E HMSE2
+	F HMSF2
+	G HMSG2
+	H HMSH2
+	I HMSI2
+}
+
+hitmarkanimatedsmall3
+{
+	A HMSA3
+	B HMSB3
+	C HMSC3
+	D HMSD3
+	E HMSE3
+	F HMSF3
+	G HMSG3
+	H HMSH3
+	I HMSI3
+}
+
+hitmarkanimatedsmallkill
+{
+	A HMSKA
+	B HMSKB
+	C HMSKC
+	D HMSKD
+	E HMSKE
+	F HMSKF
+	G HMSKG
+	H HMSKH
+	I HMSKI
+}
+
+hitmarkanimatedsmallkill2
+{
+	A HMSKA2
+	B HMSKB2
+	C HMSKC2
+	D HMSKD2
+	E HMSKE2
+	F HMSKF2
+	G HMSKG2
+	H HMSKH2
+	I HMSKI2
+}
+
+hitmarkanimatedsmallkill3
+{
+	A HMSKA3
+	B HMSKB3
+	C HMSKC3
+	D HMSKD3
+	E HMSKE3
+	F HMSKF3
+	G HMSKG3
+	H HMSKH3
+	I HMSKI3
+}
+
+hitmarkanimatedsmallreverse
+{
+	A HMSI
+	B HMSH
+	C HMSG
+	D HMSF
+	E HMSE
+	F HMSD
+	G HMSC
+	H HMSB
+	I HMSA
+}
+
+hitmarkanimatedsmallreverse2
+{
+	A HMSI2
+	B HMSH2
+	C HMSG2
+	D HMSF2
+	E HMSE2
+	F HMSD2
+	G HMSC2
+	H HMSB2
+	I HMSA2
+}
+
+hitmarkanimatedsmallreverse3
+{
+	A HMSI3
+	B HMSH3
+	C HMSG3
+	D HMSF3
+	E HMSE3
+	F HMSD3
+	G HMSC3
+	H HMSB3
+	I HMSA3
+}
+
+hitmarkanimatedsmallkillreverse
+{
+	A HMSKI
+	B HMSKH
+	C HMSKG
+	D HMSKF
+	E HMSKE
+	F HMSKD
+	G HMSKC
+	H HMSKB
+	I HMSKA
+}
+
+hitmarkanimatedsmallkillreverse2
+{
+	A HMSKI2
+	B HMSKH2
+	C HMSKG2
+	D HMSKF2
+	E HMSKE2
+	F HMSKD2
+	G HMSKC2
+	H HMSKB2
+	I HMSKA2
+}
+
+hitmarkanimatedsmallkillreverse3
+{
+	A HMSKI3
+	B HMSKH3
+	C HMSKG3
+	D HMSKF3
+	E HMSKE3
+	F HMSKD3
+	G HMSKC3
+	H HMSKB3
+	I HMSKA3
+}
+
+hitmarkvertical
+{
+	A HMV
+	B HMVK
+}
+
+hitmarkvertical2
+{
+	A HMV2
+	B HMVK2
+}
+
+hitmarkvertical3
+{
+	A HMV3
+	B HMVK3
+}
+
+hitmarkverticalsmall
+{
+	A HMVS
+	B HMVSK
+}
+
+hitmarkverticalsmall2
+{
+	A HMVS2
+	B HMVSK2
+}
+
+hitmarkverticalsmall3
+{
+	A HMVS3
+	B HMVSK3
+}

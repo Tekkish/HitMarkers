@@ -1,0 +1,45 @@
+// Call of Duty: Black Ops 4
+blackops4hit		HMBO4H
+blackops4kill		HMBO4K
+
+// Call of Duty: Black Ops Cold War
+blackopscoldwarhit	HMBOCWH
+blackopscoldwarkill	HMBOCWK
+
+// Call of Duty 4
+callofduty4hit		HMCOD4H
+
+// Default
+defaulthit			HMDEFH
+defaulthithigh		HMDEFHH
+defaulthitmedium	HMDEFHM
+defaultkill			HMDEFK
+
+// Doom (2016)
+$random doomhit		{ doomhit1 doomhit2 doomhit3 doomhit4 }
+doomhit1			HMDH1
+doomhit2			HMDH2
+doomhit3			HMDH3
+doomhit4			HMDH4
+
+// Call of Duty: Modern Warfare
+modernwarfarehit	HMMWH
+modernwarfarekill	HMMWK
+
+// Overwatch
+overwatchhit		HMOWH
+overwatchkill		HMOWK
+
+// Quake
+quakehit			HMQH
+quakehithigh		HMQHH
+quakehitmedium		HMQHM
+quakechampionskill	HMQCK
+quakelivekill		HMQLK
+
+// Team Fortress 2
+teamfortress2hit	HMTF2H
+teamfortress2kill	HMTF2K
+
+// Titanfall 2
+titanfall2kill		HMT2K

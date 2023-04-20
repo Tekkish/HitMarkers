@@ -1,0 +1,69 @@
+/*-----------------------\
+   Hitmarkers by Tekish
+\-----------------------*/
+
+class hitmarkersbridge
+{
+	ui private static int getconsoleplayer()
+	{
+		return consoleplayer;
+	}
+	
+	ui private static int gettop()
+	{
+		return statusbar.gettopofstatusbar();
+	}
+}
+
+class hitmarkershandler : eventhandler
+{
+	static const name classexceptions[] =
+	{
+		"ExplosiveBarrel1", 				// Brutal Doom, Project Brutality: Explosive Barrel
+		"HeavyMachineGunHitsProjectiles",	// Brutal Doom: Helicopter/Tank Projectiles
+		"SZ_ExplosiveBarrel1",				// Doomzone: Explosive Barrel
+		"SZ_ExplosiveBarrel2",				// Doomzone: Explosive Barrel
+		"SZ_SupplyBarrel"					// Doomzone: Supply Barrel
+	};
+
+	override void worldthingdamaged(worldevent e)
+	{
+		playerinfo player = players[consoleplayer];
+		bool enabled = cvar.getcvar("hm_enabled", player).getint();
+		int type = cvar.getcvar("hm_bridge_hitmarker", player).getint();
+
+		/*
+		if (e.damage && e.damagesource && e.thing)
+			console.printf("\nSource: %s\nTarget: %s\nMonster: %d\nDamage: %d\nHealth: %d", e.damagesource.getclassname(), e.thing.getclassname(), e.thing.bISMONSTER, e.damage, e.thing.health);
+		*/
+
+		if (enabled && type != 2 && e.damagesource && e.thing && e.damagesource is "PlayerPawn" && e.damagesource.playernumber() == consoleplayer && ((!deathmatch && e.thing.bISMONSTER) || (e.thing is "PlayerPawn" && e.thing.playernumber() != consoleplayer && !e.thing.isteammate(player.mo))))
+		{
+			bool exception;
+
+			for (int i = 0; i < classexceptions.size(); i++)
+			{
+				if (classexceptions[i] == e.thing.getclassname())
+				{
+					exception = true;
+					break;
+				}
+			}
+
+			if (!exception)
+			{
+				if (e.thing.health > 0)
+					type = 1;
+				else
+					type = 2;
+
+				int hitsound = cvar.getcvar("hm_hitsound", player).getint();
+
+				if (cvar.getcvar("hm_hitdamage", player).getint() && (!hitsound || hitsound == 5))
+					cvar.getcvar("hm_bridge_damage", player).setint(cvar.getcvar("hm_bridge_damage", player).getint() + e.damage);
+
+				cvar.getcvar("hm_bridge_hitmarker", player).setint(type);
+			}
+		}
+	}
+}
