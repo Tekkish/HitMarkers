@@ -668,7 +668,7 @@ script "hitmarkersenter" ENTER
 	if (!strcmp("TITLEMAP", strparam(n:PRINTNAME_LEVEL)))
 		terminate;
 
-	acs_namedexecute("hitmarkers", 0);
+	acs_namedexecutewithresult("hitmarkers", 0);
 }
 
 script "hitmarkersrespawn" RESPAWN
@@ -681,5 +681,5 @@ script "hitmarkersrespawn" RESPAWN
 
 	setcvar("hm_bridge_damage", 0);
 	setcvar("hm_bridge_hitmarker", 0);
-	acs_namedexecute("hitmarkers", 0);
+	acs_namedexecutewithresult("hitmarkers", 0);
 }

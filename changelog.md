@@ -1,3 +1,6 @@
+## April 29, 2023 (v1.25)
+- Fixed an oversight that caused a loading delay when spawning.
+
 ## October 24, 2022 (v1.24)
 - Fixed a bug that could cause a VM abort under certain circumstances.
 
