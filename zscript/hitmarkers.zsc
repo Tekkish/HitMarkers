@@ -29,7 +29,7 @@ class hitmarkershandler : eventhandler
 	override void worldthingdamaged(worldevent e)
 	{
 		playerinfo player = players[consoleplayer];
-		bool enabled = cvar.getcvar("hm_enabled", player).getint();
+		bool enabled = cvar.getcvar("hm_enabled", player).getbool();
 		int type = cvar.getcvar("hm_bridge_hitmarker", player).getint();
 
 		/*

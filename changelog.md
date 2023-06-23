@@ -1,3 +1,6 @@
+## June 23, 2023 (v1.26)
+- Minor code changes.
+
 ## April 29, 2023 (v1.25)
 - Fixed an oversight that caused a loading delay when spawning.
 
