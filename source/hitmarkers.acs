@@ -662,10 +662,7 @@ script "hitmarkersdeath" DEATH
 
 script "hitmarkersenter" ENTER
 {
-	if (playernumber() != scriptcall("hitmarkersbridge", "getconsoleplayer"))
-		terminate;
-
-	if (!strcmp("TITLEMAP", strparam(n:PRINTNAME_LEVEL)))
+	if (!strcmp("TITLEMAP", strparam(n:PRINTNAME_LEVEL)) || playernumber() != scriptcall("hitmarkersbridge", "getconsoleplayer") || scriptcall("hitmarkersbridge", "getnoautosavehint"))
 		terminate;
 
 	acs_namedexecutewithresult("hitmarkers", 0);
@@ -673,10 +670,7 @@ script "hitmarkersenter" ENTER
 
 script "hitmarkersrespawn" RESPAWN
 {
-	if (playernumber() != scriptcall("hitmarkersbridge", "getconsoleplayer"))
-		terminate;
-
-	if (!strcmp("TITLEMAP", strparam(n:PRINTNAME_LEVEL)))
+	if (!strcmp("TITLEMAP", strparam(n:PRINTNAME_LEVEL)) || playernumber() != scriptcall("hitmarkersbridge", "getconsoleplayer") || scriptcall("hitmarkersbridge", "getnoautosavehint"))
 		terminate;
 
 	setcvar("hm_bridge_damage", 0);
