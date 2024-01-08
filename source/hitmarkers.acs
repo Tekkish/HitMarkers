@@ -16,6 +16,7 @@
 #define HM_TICRATE			35
 #define HM_TIME				(HM_REFRESH << 16) / HM_TICRATE + 1
 
+bool killswitch;
 int animhitspeed, animhitstyle, animkillspeed, animkillstyle, sounddelay;
 int animhitstate = -1, animkillstate = -1;
 str animdefault[HM_ANIM_DEFAULT] = { "A", "B", "C", "D", "E", "F", "G", "H", "I" };
@@ -656,19 +657,17 @@ function void hitmarkers(void)
 
 script "hitmarkers" (void)
 {
+	if (scriptcall(HM_BRIDGE, "getdeath"))
+	{
+		killswitch = true;
+		terminate;
+	}
+
 	animationhandler();
 	decrementdelay();
 	hitmarkers();
 	delay(HM_REFRESH);
 	restart;
-}
-
-script "hitmarkersdeath" DEATH
-{
-	if (playernumber() != scriptcall(HM_BRIDGE, "getconsoleplayer"))
-		terminate;
-
-	acs_namedterminate("hitmarkers", 0);
 }
 
 script "hitmarkersenter" ENTER
@@ -681,10 +680,14 @@ script "hitmarkersenter" ENTER
 
 script "hitmarkersrespawn" RESPAWN
 {
-	if (!strcmp("TITLEMAP", strparam(n:PRINTNAME_LEVEL)) || playernumber() != scriptcall(HM_BRIDGE, "getconsoleplayer") || scriptcall(HM_BRIDGE, "getnoautosavehint"))
+	if (playernumber() != scriptcall(HM_BRIDGE, "getconsoleplayer") || scriptcall(HM_BRIDGE, "getnoautosavehint"))
 		terminate;
 
-	setcvarplayer("hm_bridge_damage", 0);
-	setcvarplayer("hm_bridge_hitmarker", 0);
-	acs_namedexecutewithresult("hitmarkers", 0);
+	if (killswitch)
+	{
+		killswitch = false;
+		setcvarplayer("hm_bridge_damage", 0);
+		setcvarplayer("hm_bridge_hitmarker", 0);
+		acs_namedexecutewithresult("hitmarkers", 0);
+	}
 }
