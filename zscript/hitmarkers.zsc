@@ -23,6 +23,11 @@ class hitmarkersbridge
 	{
 		return statusbar.gettopofstatusbar();
 	}
+
+	ui private static void playsound(sound sound, int channel, int flags, float volume, float attenuation)
+	{
+		s_startsound(sound, channel, flags, volume, attenuation);
+	}
 }
 
 class hitmarkershandler : eventhandler

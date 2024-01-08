@@ -8,6 +8,7 @@
 #define HM_ANIM_DEFAULT		9
 #define HM_ANIM_IMPACT		15
 #define HM_BASECOLOR		CR_UNTRANSLATED
+#define HM_BRIDGE			"hitmarkersbridge"
 #define HM_FLAGS			HUDMSG_FADEOUT | HUDMSG_ALPHA | HUDMSG_NOTWITHFULLMAP | HUDMSG_NOTWITHOVERLAYMAP
 #define HM_ID				160400
 #define HM_REFRESH			1
@@ -150,13 +151,18 @@ function int getcolor(int color)
 	return color;
 }
 
+function int getcvarplayer(str cvar)
+{
+	return getusercvar(scriptcall(HM_BRIDGE, "getconsoleplayer"), cvar);
+}
+
 function str hitdamage(str sound)
 {
-	if (getcvar("hm_hitdamage"))
+	if (getcvarplayer("hm_hitdamage"))
 	{
-		int damage = getcvar("hm_bridge_damage");
-		int hitdamagehigh = getcvar("hm_hitdamagehigh");
-		int hitdamagemedium = getcvar("hm_hitdamagemedium");
+		int damage = getcvarplayer("hm_bridge_damage");
+		int hitdamagehigh = getcvarplayer("hm_hitdamagehigh");
+		int hitdamagemedium = getcvarplayer("hm_hitdamagemedium");
 		str type = "";
 
 		if (hitdamagehigh < 1 || hitdamagehigh > 1000)
@@ -187,19 +193,19 @@ function void renderhit(int hitmarker, bool force)
 	str font = "", type = "A";
 
 	if (getcvar("screenblocks") < 11)
-		statusbar = height - scriptcall("hitmarkersbridge", "gettop");
+		statusbar = height - scriptcall(HM_BRIDGE, "gettop");
 
 	x = (fixeddiv(width << 16, 2.0) >> 16) << 16;
 	y = (fixeddiv(height - statusbar << 16, 2.0) >> 16) << 16;
 
-	int fade = getcvar("hm_fade");
+	int fade = getcvarplayer("hm_fade");
 
 	if (fade < 0.1 || fade > 1.5)
 		fade = 0.75;
 
-	bool killpriority = getcvar("hm_killpriority");
+	bool killpriority = getcvarplayer("hm_killpriority");
 
-	int opacity = getcvar("hm_opacity");
+	int opacity = getcvarplayer("hm_opacity");
 
 	if (opacity < 10 || opacity > 100)
 		opacity = 100;
@@ -210,14 +216,14 @@ function void renderhit(int hitmarker, bool force)
 	{
 		if (hitmarker == 2)
 		{
-			int killstyle = getcvar("hm_killstyle");
+			int killstyle = getcvarplayer("hm_killstyle");
 
 			if (styletype(killstyle, 0))
 				style = killstyle;
 		}
 		else
 		{
-			int hitstyle = getcvar("hm_hitstyle");
+			int hitstyle = getcvarplayer("hm_hitstyle");
 
 			if (styletype(hitstyle, 0))
 				style = hitstyle;
@@ -301,7 +307,7 @@ function void renderhit(int hitmarker, bool force)
 
 	if (hitmarker == 2)
 	{
-		int killcolor = getcvar("hm_killcolor");
+		int killcolor = getcvarplayer("hm_killcolor");
 
 		if (killcolor < 0 || killcolor > 18)
 			killcolor = 0;
@@ -309,7 +315,7 @@ function void renderhit(int hitmarker, bool force)
 
 	if (animation)
 	{
-		bool hitspeed = getcvar("hm_hitspeed");
+		bool hitspeed = getcvarplayer("hm_hitspeed");
 
 		if (hitmarker == 2)
 		{
@@ -413,7 +419,7 @@ function void renderhit(int hitmarker, bool force)
 
 		if (styletype(style, 2))
 		{
-			fade = getcvar("hm_fadeanimated");
+			fade = getcvarplayer("hm_fadeanimated");
 
 			if (fade < 0.1 || fade > 1.5)
 				fade = 0.35;
@@ -446,7 +452,7 @@ function void renderhit(int hitmarker, bool force)
 	}
 	else
 	{
-		int hitcolor = getcvar("hm_hitcolor");
+		int hitcolor = getcvarplayer("hm_hitcolor");
 
 		if (hitcolor < 0 || hitcolor > 18)
 			hitcolor = 0;
@@ -455,7 +461,7 @@ function void renderhit(int hitmarker, bool force)
 			color = getcolor(hitcolor);
 	}
 
-	int size = getcvar("hm_size");
+	int size = getcvarplayer("hm_size");
 
 	if (size == 1 || size == 2)
 		font = strparam(s:font, d:size + 1);
@@ -465,9 +471,14 @@ function void renderhit(int hitmarker, bool force)
 	hudmessage(s:type; HM_FLAGS, id, color, x, y, HM_TIME, fade, opacity);
 }
 
+function int setcvarplayer(str cvar, int value)
+{
+	return setusercvar(scriptcall(HM_BRIDGE, "getconsoleplayer"), cvar, value);
+}
+
 function str soundlimit(str sound)
 {
-	if (getcvar("hm_soundlimit"))
+	if (getcvarplayer("hm_soundlimit"))
 	{
 		if (sounddelay)
 			sound = "";
@@ -509,19 +520,19 @@ function bool styletype(int style, int type)
 
 function void hitmarkers(void)
 {
-	bool hitsounds = getcvar("hm_hitsounds");
-	bool killsounds = getcvar("hm_killsounds");
-	bool showhitmarkers = getcvar("hm_showhitmarkers");
-	bool showkillmarkers = getcvar("hm_showkillmarkers");
-	int hitmarker = getcvar("hm_bridge_hitmarker");
+	bool hitsounds = getcvarplayer("hm_hitsounds");
+	bool killsounds = getcvarplayer("hm_killsounds");
+	bool showhitmarkers = getcvarplayer("hm_showhitmarkers");
+	bool showkillmarkers = getcvarplayer("hm_showkillmarkers");
+	int hitmarker = getcvarplayer("hm_bridge_hitmarker");
 
-	if (getcvar("hm_enabled") && hitmarker && (hitsounds || killsounds || showhitmarkers || showkillmarkers))
+	if (getcvarplayer("hm_enabled") && hitmarker && (hitsounds || killsounds || showhitmarkers || showkillmarkers))
 	{
 		int channel;
 		str hitsound = "", killsound = "", sound = "";
 
-		int hitsoundid = getcvar("hm_hitsound");
-		int volume = getcvar("hm_volume");
+		int hitsoundid = getcvarplayer("hm_hitsound");
+		int volume = getcvarplayer("hm_volume");
 
 		if (volume < 1 || volume > 100)
 			volume = 100;
@@ -576,7 +587,7 @@ function void hitmarkers(void)
 		{
 			if (killsounds)
 			{
-				int killsoundid = getcvar("hm_killsound");
+				int killsoundid = getcvarplayer("hm_killsound");
 
 				switch (killsoundid)
 				{
@@ -634,12 +645,12 @@ function void hitmarkers(void)
 			renderhit(hitmarker, false);
 
 		if (strcmp(sound, ""))
-			playsound(0, sound, channel | CHAN_UI, volume, false, ATTN_NONE);
+			scriptcall(HM_BRIDGE, "playsound", sound, channel, CHAN_UI, volume, ATTN_NONE);
 
-		if (getcvar("hm_hitdamage") && (!hitsoundid || hitsoundid == 5))
-			setcvar("hm_bridge_damage", 0);
+		if (getcvarplayer("hm_hitdamage") && (!hitsoundid || hitsoundid == 5))
+			setcvarplayer("hm_bridge_damage", 0);
 
-		setcvar("hm_bridge_hitmarker", 0);
+		setcvarplayer("hm_bridge_hitmarker", 0);
 	}
 }
 
@@ -654,7 +665,7 @@ script "hitmarkers" (void)
 
 script "hitmarkersdeath" DEATH
 {
-	if (playernumber() != scriptcall("hitmarkersbridge", "getconsoleplayer"))
+	if (playernumber() != scriptcall(HM_BRIDGE, "getconsoleplayer"))
 		terminate;
 
 	acs_namedterminate("hitmarkers", 0);
@@ -662,7 +673,7 @@ script "hitmarkersdeath" DEATH
 
 script "hitmarkersenter" ENTER
 {
-	if (!strcmp("TITLEMAP", strparam(n:PRINTNAME_LEVEL)) || playernumber() != scriptcall("hitmarkersbridge", "getconsoleplayer") || scriptcall("hitmarkersbridge", "getnoautosavehint"))
+	if (!strcmp("TITLEMAP", strparam(n:PRINTNAME_LEVEL)) || playernumber() != scriptcall(HM_BRIDGE, "getconsoleplayer") || scriptcall(HM_BRIDGE, "getnoautosavehint"))
 		terminate;
 
 	acs_namedexecutewithresult("hitmarkers", 0);
@@ -670,10 +681,10 @@ script "hitmarkersenter" ENTER
 
 script "hitmarkersrespawn" RESPAWN
 {
-	if (!strcmp("TITLEMAP", strparam(n:PRINTNAME_LEVEL)) || playernumber() != scriptcall("hitmarkersbridge", "getconsoleplayer") || scriptcall("hitmarkersbridge", "getnoautosavehint"))
+	if (!strcmp("TITLEMAP", strparam(n:PRINTNAME_LEVEL)) || playernumber() != scriptcall(HM_BRIDGE, "getconsoleplayer") || scriptcall(HM_BRIDGE, "getnoautosavehint"))
 		terminate;
 
-	setcvar("hm_bridge_damage", 0);
-	setcvar("hm_bridge_hitmarker", 0);
+	setcvarplayer("hm_bridge_damage", 0);
+	setcvarplayer("hm_bridge_hitmarker", 0);
 	acs_namedexecutewithresult("hitmarkers", 0);
 }
