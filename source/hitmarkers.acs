@@ -471,7 +471,7 @@ function void renderhit(int hitmarker, bool force)
 	hudmessage(s:type; HM_FLAGS, id, color, x, y, HM_TIME, fade, opacity);
 }
 
-function int setcvarplayer(str cvar, int value)
+function bool setcvarplayer(str cvar, int value)
 {
 	return setusercvar(scriptcall(HM_BRIDGE, "getconsoleplayer"), cvar, value);
 }
