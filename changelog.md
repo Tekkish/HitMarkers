@@ -1,3 +1,6 @@
+## January 14, 2024 (v1.30)
+- Minor performance optimizations.
+
 ## January 8, 2024 (v1.29)
 - Fixed a bug that created multiple instances of the add-on when morphing or respawning.
 

@@ -17,7 +17,7 @@
 #define HM_TIME				(HM_REFRESH << 16) / HM_TICRATE + 1
 
 bool killswitch;
-int animhitspeed, animhitstyle, animkillspeed, animkillstyle, sounddelay;
+int animhitspeed, animhitstyle, animkillspeed, animkillstyle, consoleplayer, sounddelay;
 int animhitstate = -1, animkillstate = -1;
 str animdefault[HM_ANIM_DEFAULT] = { "A", "B", "C", "D", "E", "F", "G", "H", "I" };
 str animimpact[HM_ANIM_IMPACT] = { "A", "B", "C", "D", "E", "E", "E", "E", "E", "E", "E", "F", "G", "H", "I" };
@@ -154,7 +154,7 @@ function int getcolor(int color)
 
 function int getcvarplayer(str cvar)
 {
-	return getusercvar(scriptcall(HM_BRIDGE, "getconsoleplayer"), cvar);
+	return getusercvar(consoleplayer, cvar);
 }
 
 function str hitdamage(str sound)
@@ -474,7 +474,7 @@ function void renderhit(int hitmarker, bool force)
 
 function bool setcvarplayer(str cvar, int value)
 {
-	return setusercvar(scriptcall(HM_BRIDGE, "getconsoleplayer"), cvar, value);
+	return setusercvar(consoleplayer, cvar, value);
 }
 
 function str soundlimit(str sound)
@@ -663,6 +663,7 @@ script "hitmarkers" (void)
 		terminate;
 	}
 
+	consoleplayer = scriptcall(HM_BRIDGE, "getconsoleplayer");
 	animationhandler();
 	decrementdelay();
 	hitmarkers();
