@@ -676,7 +676,7 @@ script "hitmarkersenter" ENTER
 	if (!strcmp("TITLEMAP", strparam(n:PRINTNAME_LEVEL)) || playernumber() != scriptcall(HM_BRIDGE, "getconsoleplayer") || scriptcall(HM_BRIDGE, "getnoautosavehint"))
 		terminate;
 
-	acs_namedexecutewithresult("hitmarkers", 0);
+	acs_namedexecutewithresult("hitmarkers");
 }
 
 script "hitmarkersrespawn" RESPAWN
@@ -689,6 +689,6 @@ script "hitmarkersrespawn" RESPAWN
 		killswitch = false;
 		setcvarplayer("hm_bridge_damage", 0);
 		setcvarplayer("hm_bridge_hitmarker", 0);
-		acs_namedexecutewithresult("hitmarkers", 0);
+		acs_namedexecutewithresult("hitmarkers");
 	}
 }
