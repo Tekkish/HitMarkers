@@ -42,7 +42,9 @@ class hitmarkersbridge
 
 class hitmarkershandler : eventhandler
 {
-	static const name classexceptions[] =
+	static const name damagenames[] = { "Acid", "Bleeding", "Fire", "Poison" };
+	static const int damagetypes[] = { 4, 2, 3, 5 };
+	static const name targetexceptions[] =
 	{
 		"ExplosiveBarrel1", 				// Brutal Doom, Project Brutality: Explosive Barrel
 		"HeavyMachineGunHitsProjectiles",	// Brutal Doom: Helicopter/Tank Projectiles
@@ -55,20 +57,20 @@ class hitmarkershandler : eventhandler
 	{
 		playerinfo player = players[consoleplayer];
 		bool enabled = cvar.getcvar("hm_enabled", player).getbool();
-		int type = cvar.getcvar("hm_bridge_hitmarker", player).getint();
+		bool kill = cvar.getcvar("hm_bridge_kill", player).getbool();
 
 		/*
-		if (e.damage && e.damagesource && e.thing)
-			console.printf("\nSource: %s\nTarget: %s\nMonster: %d\nDamage: %d\nHealth: %d", e.damagesource.getclassname(), e.thing.getclassname(), e.thing.bISMONSTER, e.damage, e.thing.health);
+		if (e.damage && e.damagesource && e.damagetype && e.thing)
+			console.printf("\nSource: %s\nTarget: %s\nType: %s\nMonster: %d\nDamage: %d\nHealth: %d", e.damagesource.getclassname(), e.thing.getclassname(), e.damagetype, e.thing.bISMONSTER, e.damage, e.thing.health);
 		*/
 
-		if (enabled && type != 2 && e.damagesource && e.thing && e.damagesource is "PlayerPawn" && e.damagesource.playernumber() == consoleplayer && ((!deathmatch && e.thing.bISMONSTER) || (e.thing is "PlayerPawn" && e.thing.playernumber() != consoleplayer && !e.thing.isteammate(player.mo))))
+		if (enabled && !kill && e.damagesource && e.thing && e.damagesource is "PlayerPawn" && e.damagesource.playernumber() == consoleplayer && ((!deathmatch && e.thing.bISMONSTER) || (e.thing is "PlayerPawn" && e.thing.playernumber() != consoleplayer && !e.thing.isteammate(player.mo))))
 		{
 			bool exception;
 
-			for (int i = 0; i < classexceptions.size(); i++)
+			for (int i = 0; i < targetexceptions.size(); i++)
 			{
-				if (classexceptions[i] == e.thing.getclassname())
+				if (targetexceptions[i] == e.thing.getclassname())
 				{
 					exception = true;
 					break;
@@ -77,17 +79,27 @@ class hitmarkershandler : eventhandler
 
 			if (!exception)
 			{
+				int type = 1;
+
+				for (int i = 0; i < damagetypes.size(); i++)
+				{
+					if (damagenames[i] == e.damagetype)
+					{
+						if (cvar.getcvar("hm_dot", player).getbool())
+							type = damagetypes[i];
+
+						break;
+					}
+				}
+
 				if (e.thing.health > 0)
-					type = 1;
+					kill = false;
 				else
-					type = 2;
+					kill = true;
 
-				int hitsound = cvar.getcvar("hm_hitsound", player).getint();
-
-				if (cvar.getcvar("hm_hitdamage", player).getint() && (!hitsound || hitsound == 5))
-					cvar.getcvar("hm_bridge_damage", player).setint(cvar.getcvar("hm_bridge_damage", player).getint() + e.damage);
-
-				cvar.getcvar("hm_bridge_hitmarker", player).setint(type);
+				cvar.getcvar("hm_bridge_damage", player).setint(cvar.getcvar("hm_bridge_damage", player).getint() + e.damage);
+				cvar.getcvar("hm_bridge_kill", player).setbool(kill);
+				cvar.getcvar("hm_bridge_type", player).setint(type);
 			}
 		}
 	}

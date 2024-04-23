@@ -17,7 +17,7 @@
 #define HM_TIME				(HM_REFRESH << 16) / HM_TICRATE + 1
 
 bool killswitch;
-int animhitspeed, animhitstyle, animkillspeed, animkillstyle, consoleplayer, sounddelay;
+int animhitspeed, animhitstyle, animkillspeed, animkillstyle, consoleplayer, hitmarkertype, sounddelay;
 int animhitstate = -1, animkillstate = -1;
 str animdefault[HM_ANIM_DEFAULT] = { "A", "B", "C", "D", "E", "F", "G", "H", "I" };
 str animimpact[HM_ANIM_IMPACT] = { "A", "B", "C", "D", "E", "E", "E", "E", "E", "E", "E", "F", "G", "H", "I" };
@@ -40,7 +40,7 @@ function void animationhandler(void)
 		if (animhitstate < animhitmaximum - HM_REFRESH * animhitspeed)
 		{
 			animhitstate = animhitstate + HM_REFRESH * animhitspeed;
-			renderhit(1, true);
+			renderhit(hitmarkertype, true);
 		}
 		else
 		{
@@ -58,7 +58,7 @@ function void animationhandler(void)
 		if (animkillstate < animkillmaximum - HM_REFRESH * animkillspeed)
 		{
 			animkillstate = animkillstate + HM_REFRESH * animkillspeed;
-			renderhit(2, true);
+			renderhit(-1, true);
 		}
 		else
 		{
@@ -215,7 +215,7 @@ function void renderhit(int hitmarker, bool force)
 
 	if (!force)
 	{
-		if (hitmarker == 2)
+		if (hitmarker == -1)
 		{
 			int killstyle = getcvarplayer("hm_killstyle");
 
@@ -224,7 +224,12 @@ function void renderhit(int hitmarker, bool force)
 		}
 		else
 		{
-			int hitstyle = getcvarplayer("hm_hitstyle");
+			int hitstyle;
+
+			if (hitmarker > 1)
+				hitstyle = getcvarplayer("hm_dotstyle");
+			else
+				hitstyle = getcvarplayer("hm_hitstyle");
 
 			if (styletype(hitstyle, 0))
 				style = hitstyle;
@@ -284,7 +289,7 @@ function void renderhit(int hitmarker, bool force)
 	{
 		animation = true;
 
-		if (hitmarker == 2)
+		if (hitmarker == -1)
 		{
 			if (styletype(animkillstyle, 2))
 				type = animdefault[animkillstate];
@@ -306,7 +311,7 @@ function void renderhit(int hitmarker, bool force)
 		}
 	}
 
-	if (hitmarker == 2)
+	if (hitmarker == -1)
 	{
 		int killcolor = getcvarplayer("hm_killcolor");
 
@@ -316,10 +321,10 @@ function void renderhit(int hitmarker, bool force)
 
 	if (animation)
 	{
-		bool hitspeed = getcvarplayer("hm_hitspeed");
-
-		if (hitmarker == 2)
+		if (hitmarker == -1)
 		{
+			bool killspeed = getcvarplayer("hm_killspeed");
+
 			switch (style)
 			{
 				case 1:
@@ -366,7 +371,7 @@ function void renderhit(int hitmarker, bool force)
 
 			if (!force)
 			{
-				if (hitspeed && !styletype(style, 3))
+				if (killspeed && !styletype(style, 3))
 					animkillspeed = 2;
 				else
 					animkillspeed = 1;
@@ -377,6 +382,13 @@ function void renderhit(int hitmarker, bool force)
 		}
 		else
 		{
+			bool hitspeed;
+
+			if (hitmarker > 1)
+				hitspeed = getcvarplayer("hm_dotspeed");
+			else
+				hitspeed = getcvarplayer("hm_hitspeed");
+
 			switch (style)
 			{
 				case 1:
@@ -431,7 +443,7 @@ function void renderhit(int hitmarker, bool force)
 		}
 	}
 
-	if (hitmarker == 2)
+	if (hitmarker == -1)
 	{
 		if (killcolor)
 			color = getcolor(killcolor);
@@ -453,13 +465,40 @@ function void renderhit(int hitmarker, bool force)
 	}
 	else
 	{
-		int hitcolor = getcvarplayer("hm_hitcolor");
+		if (hitmarker > 1)
+		{
+			if (getcvarplayer("hm_dothit") == 2)
+			{
+				switch (hitmarker)
+				{
+					case 2: // Bleed
+						color = CR_DARKRED;
+						break;
 
-		if (hitcolor < 0 || hitcolor > 18)
-			hitcolor = 0;
+					case 3: // Burn
+						color = CR_ORANGE;
+						break;
 
-		if (hitcolor)
-			color = getcolor(hitcolor);
+					case 4: // Corrosive
+						color = CR_OLIVE;
+						break;
+
+					case 5: // Poison
+						color = CR_GREEN;
+				}
+			}
+		}
+
+		if (color == HM_BASECOLOR)
+		{
+			int hitcolor = getcvarplayer("hm_hitcolor");
+
+			if (hitcolor < 0 || hitcolor > 18)
+				hitcolor = 0;
+
+			if (hitcolor)
+				color = getcolor(hitcolor);
+		}
 	}
 
 	int size = getcvarplayer("hm_size");
@@ -521,28 +560,42 @@ function bool styletype(int style, int type)
 
 function void hitmarkers(void)
 {
+	bool enabled = getcvarplayer("hm_enabled");
+	bool hitmarkerkill = getcvarplayer("hm_bridge_kill");
 	bool hitsounds = getcvarplayer("hm_hitsounds");
 	bool killsounds = getcvarplayer("hm_killsounds");
 	bool showhitmarkers = getcvarplayer("hm_showhitmarkers");
 	bool showkillmarkers = getcvarplayer("hm_showkillmarkers");
-	int hitmarker = getcvarplayer("hm_bridge_hitmarker");
+	int type = getcvarplayer("hm_bridge_type");
 
-	if (getcvarplayer("hm_enabled") && hitmarker && (hitsounds || killsounds || showhitmarkers || showkillmarkers))
+	if (enabled && !(hitsounds || killsounds || showhitmarkers || showkillmarkers))
 	{
-		int channel;
-		str hitsound = "", killsound = "", sound = "";
+		enabled = false;
+		setcvarplayer("hm_enabled", 0);
+	}
 
-		int hitsoundid = getcvarplayer("hm_hitsound");
-		int volume = getcvarplayer("hm_volume");
+	if (enabled && type)
+	{
+		int channel, dothit, dotsounds;
+		str sound = "";
 
-		if (volume < 1 || volume > 100)
-			volume = 100;
-
-		volume = fixeddiv(volume << 16, 100.0);
-
-		if (hitsounds)
+		if (type > 1)
 		{
-			switch (hitsoundid)
+			dothit = getcvarplayer("hm_dothit");
+			dotsounds = getcvarplayer("hm_dotsounds");
+		}
+
+		if (hitsounds && (!hitmarkerkill || (hitmarkerkill && !killsounds)) && (type == 1 || (dotsounds && type > 1)))
+		{
+			int hitsound;
+
+			if (type > 1)
+				hitsound = getcvarplayer("hm_dotsound");
+
+			if (!hitsound)
+				hitsound = getcvarplayer("hm_hitsound");
+
+			switch (hitsound)
 			{
 				case 1:
 					sound = "blackops4hit";
@@ -584,13 +637,13 @@ function void hitmarkers(void)
 			sound = soundlimit(sound);
 		}
 
-		if (hitmarker == 2)
+		if (hitmarkerkill)
 		{
 			if (killsounds)
 			{
-				int killsoundid = getcvarplayer("hm_killsound");
+				int killsound = getcvarplayer("hm_killsound");
 
-				switch (killsoundid)
+				switch (killsound)
 				{
 					case 1:
 						sound = "blackops4kill";
@@ -633,25 +686,38 @@ function void hitmarkers(void)
 
 			if (showkillmarkers)
 			{
-				renderhit(hitmarker, false);
-				hitmarker = 0;
-			}
-			else
-			{
-				hitmarker = 1;
+				renderhit(-1, false);
+				showhitmarkers = false;
 			}
 		}
 
-		if (hitmarker && showhitmarkers)
-			renderhit(hitmarker, false);
+		if (showhitmarkers && (type == 1 || (dothit && type > 1)))
+		{
+			hitmarkertype = type;
+			renderhit(type, false);
+		}
 
-		if (strcmp(sound, ""))
+		if (hitsounds || killsounds)
+		{
+			int volume = getcvarplayer("hm_volume");
+
+			if (volume < 1 || volume > 100)
+				volume = 100;
+
+			if (dotsounds == 2)
+				volume = volume / 2;
+			else if (dotsounds == 3)
+				volume = volume / 4;
+			else if (dotsounds == 4)
+				volume = volume / 10;
+
+			volume = fixeddiv(volume << 16, 100.0);
 			scriptcall(HM_BRIDGE, "playsound", sound, channel, CHAN_UI, volume, ATTN_NONE);
+		}
 
-		if (getcvarplayer("hm_hitdamage") && (!hitsoundid || hitsoundid == 5))
-			setcvarplayer("hm_bridge_damage", 0);
-
-		setcvarplayer("hm_bridge_hitmarker", 0);
+		setcvarplayer("hm_bridge_damage", 0);
+		setcvarplayer("hm_bridge_kill", 0);
+		setcvarplayer("hm_bridge_type", 0);
 	}
 }
 
@@ -688,7 +754,8 @@ script "hitmarkersrespawn" RESPAWN
 	{
 		killswitch = false;
 		setcvarplayer("hm_bridge_damage", 0);
-		setcvarplayer("hm_bridge_hitmarker", 0);
+		setcvarplayer("hm_bridge_kill", 0);
+		setcvarplayer("hm_bridge_type", 0);
 		acs_namedexecutewithresult("hitmarkers");
 	}
 }

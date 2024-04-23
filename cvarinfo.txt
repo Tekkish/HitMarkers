@@ -1,3 +1,5 @@
+user bool hm_dot = false;
+user bool hm_dotspeed = false;
 user bool hm_enabled = true;
 user bool hm_hitdamage = true;
 user bool hm_hitsounds = true;
@@ -10,6 +12,10 @@ user bool hm_showkillmarkers = true;
 user bool hm_soundlimit = false;
 user float hm_fade = 0.75;
 user float hm_fadeanimated = 0.35;
+user int hm_dothit = 2;
+user int hm_dotsound = 0;
+user int hm_dotsounds = 3;
+user int hm_dotstyle = 3;
 user int hm_hitcolor = 0;
 user int hm_hitdamagehigh = 75;
 user int hm_hitdamagemedium = 25;
@@ -22,5 +28,6 @@ user int hm_opacity = 100;
 user int hm_size = 0;
 user int hm_volume = 100;
 
+user noarchive bool hm_bridge_kill;
 user noarchive int hm_bridge_damage;
-user noarchive int hm_bridge_hitmarker;
+user noarchive int hm_bridge_type;

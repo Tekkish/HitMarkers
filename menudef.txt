@@ -43,6 +43,19 @@ OptionMenu "HM_Options"
 	Option "Use Damage Hit Sounds", "hm_hitdamage", "HM_YesNo"
 	Slider "High Damage Hit", "hm_hitdamagehigh", 1, 1000, 1, 0
 	Slider "Medium Damage Hit", "hm_hitdamagemedium", 1, 1000, 1, 0
+	StaticText ""
+	StaticText "Damage Over Time Options", 1
+	StaticText "You can change the way that hit markers and"
+	StaticText "sounds react to damage you inflict over time."
+	StaticText "This should only be used with applicable"
+	StaticText "mods. Otherwise, false positives can occur."
+	StaticText ""
+	Option "Use DOT Detection", "hm_dot", "HM_YesNo"
+	Option "DOT Hit Animation Speed", "hm_dotspeed", "HM_Speed"
+	Option "DOT Hit Markers", "hm_dothit", "HM_DotHit"
+	Option "DOT Hit Marker Style", "hm_dotstyle", "HM_Style"
+	Option "DOT Hit Sounds", "hm_dotsounds", "HM_DotSound"
+	Option "DOT Hit Sound Type", "hm_dotsound", "HM_HitSound"
 }
 
 OptionValue "HM_Color"
@@ -66,6 +79,22 @@ OptionValue "HM_Color"
 	16, "Teal"
 	17, "White"
 	18, "Yellow"
+}
+
+OptionValue "HM_DotHit"
+{
+	0, "No"
+	1, "Yes"
+	2, "Colorize"
+}
+
+OptionValue "HM_DotSound"
+{
+	0, "No"
+	1, "Yes"
+	2, "50% of Current Volume"
+	3, "25% of Current Volume"
+	4, "10% of Current Volume"
 }
 
 OptionValue "HM_HitSound"
