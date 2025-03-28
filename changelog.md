@@ -1,3 +1,6 @@
+## March 27, 2025 (v1.32)
+- Added support for language translations.
+
 ## April 23, 2024 (v1.31)
 - Added damage over time detection with customization for hit markers and sounds.
 - Minor performance optimizations.
