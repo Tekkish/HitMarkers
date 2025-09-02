@@ -1,3 +1,7 @@
+## September 2, 2025 (v1.33)
+- Added a detection list to trigger hit/kill markers when damaging something that isn't an enemy.
+- Added Diamond Dragon's head hitboxes to the detection list.
+
 ## March 27, 2025 (v1.32)
 - Added support for language translations.
 
@@ -37,7 +41,7 @@
 - Added options to modify the colors of the hit and kill markers.
 
 ## August 19, 2021 (v1.20)
-- Added a class exception list to avoid unintentionally triggering hit/kill markers in some mods.
+- Added an exception list to avoid unintentionally triggering hit/kill markers in some mods.
 
 ## March 25, 2021 (v1.19)
 - Various code and structure changes.

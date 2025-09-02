@@ -42,6 +42,19 @@ class hitmarkershandler : eventhandler
 {
 	static const name damagenames[] = { "Acid", "Bleeding", "Fire", "Poison" };
 	static const int damagetypes[] = { 4, 2, 3, 5 };
+
+	static const name targetdetections[] =
+	{
+		// Diamond Dragon: Head Hitboxes
+		"CommandoHeadHitbox", "CommandoHelmetHeadHitbox", "CommandoHelmetHeadHitboxBlue", "HeadHitbox", "HelmetHitbox", "HelmetHitbox2", "HelmetHitbox2Blue", "HelmetHitbox2Blue2", "HelmetHitbox2Blue3", "HelmetHitbox2BlueRedBlood", "HelmetHitbox2RiotShield", "HunterHeadHitbox", "ImpHeadHitbox", "MechaHeadHitbox", "RevenantHeadHitbox", "TerminatorHeadHitbox", "VileHeadHitbox"
+	};
+
+	static const name targetdetectionsplayerclass[] =
+	{
+		// Diamond Dragon
+		"Kiwi", "Kiwi", "Kiwi", "Kiwi", "Kiwi", "Kiwi", "Kiwi", "Kiwi", "Kiwi", "Kiwi", "Kiwi", "Kiwi", "Kiwi", "Kiwi", "Kiwi", "Kiwi", "Kiwi"
+	};
+
 	static const name targetexceptions[] =
 	{
 		"ExplosiveBarrel1", 				// Brutal Doom, Project Brutality: Explosive Barrel
@@ -50,6 +63,28 @@ class hitmarkershandler : eventhandler
 		"SZ_ExplosiveBarrel2",				// Doomzone: Explosive Barrel
 		"SZ_SupplyBarrel"					// Doomzone: Supply Barrel
 	};
+
+	private bool targetdetection(name target, name playerclass)
+	{
+		for (int i = 0; i < targetdetections.size(); i++)
+		{
+			if (targetdetectionsplayerclass[i] == playerclass && targetdetections[i] == target)
+				return true;
+		}
+
+		return false;
+	}
+
+	private bool targetexception(name target)
+	{
+		for (int i = 0; i < targetexceptions.size(); i++)
+		{
+			if (targetexceptions[i] == target)
+				return true;
+		}
+
+		return false;
+	}
 
 	override void worldthingdamaged(worldevent e)
 	{
@@ -62,20 +97,9 @@ class hitmarkershandler : eventhandler
 			console.printf("\nSource: %s\nTarget: %s\nType: %s\nMonster: %d\nDamage: %d\nHealth: %d", e.damagesource.getclassname(), e.thing.getclassname(), e.damagetype, e.thing.bISMONSTER, e.damage, e.thing.health);
 		*/
 
-		if (enabled && !kill && e.damagesource && e.thing && e.damagesource is "PlayerPawn" && e.damagesource.playernumber() == consoleplayer && ((!deathmatch && e.thing.bISMONSTER) || (e.thing is "PlayerPawn" && e.thing.playernumber() != consoleplayer && !e.thing.isteammate(player.mo))))
+		if (enabled && !kill && e.damagesource && e.thing && e.damagesource is "PlayerPawn" && e.damagesource.playernumber() == consoleplayer && ((!deathmatch && (e.thing.bISMONSTER || targetdetection(e.thing.getclassname(), player.mo.getclassname()))) || (e.thing is "PlayerPawn" && e.thing.playernumber() != consoleplayer && !e.thing.isteammate(player.mo))))
 		{
-			bool exception;
-
-			for (int i = 0; i < targetexceptions.size(); i++)
-			{
-				if (targetexceptions[i] == e.thing.getclassname())
-				{
-					exception = true;
-					break;
-				}
-			}
-
-			if (!exception)
+			if (!targetexception(e.thing.getclassname()))
 			{
 				int type = 1;
 
