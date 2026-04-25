@@ -16,6 +16,7 @@ HitMarkers utilizes sounds from the following games:
 - Call of Duty: Black Ops 4 by Treyarch
 - Call of Duty: Black Ops Cold War by Treyarch
 - Call of Duty: Modern Warfare by Infinity Ward
+- Call of Duty: Modern Warfare III by Sledgehammer Games
 - Doom (2016) by id Software
 - Overwatch by Blizzard Entertainment
 - Quake Champions by id Software

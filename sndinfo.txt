@@ -1,45 +1,52 @@
 // Call of Duty: Black Ops 4
-blackops4hit		HMBO4H
-blackops4kill		HMBO4K
+blackops4hit			HMBO4H
+$random blackops4kill	{ blackops4kill1 blackops4kill2 blackops4kill3 }
+blackops4kill1			HMBO4K1
+blackops4kill2			HMBO4K2
+blackops4kill3			HMBO4K3
 
 // Call of Duty: Black Ops Cold War
-blackopscoldwarhit	HMBOCWH
-blackopscoldwarkill	HMBOCWK
+blackopscoldwarhit		HMBOCWH
+blackopscoldwarkill		HMBOCWK
 
 // Call of Duty 4
-callofduty4hit		HMCOD4H
+callofduty4hit			HMCOD4H
 
 // Default
-defaulthit			HMDEFH
-defaulthithigh		HMDEFHH
-defaulthitmedium	HMDEFHM
-defaultkill			HMDEFK
+defaulthit				HMDEFH
+defaulthithigh			HMDEFHH
+defaulthitmedium		HMDEFHM
+defaultkill				HMDEFK
 
 // Doom (2016)
-$random doomhit		{ doomhit1 doomhit2 doomhit3 doomhit4 }
-doomhit1			HMDH1
-doomhit2			HMDH2
-doomhit3			HMDH3
-doomhit4			HMDH4
+$random doomhit			{ doomhit1 doomhit2 doomhit3 doomhit4 }
+doomhit1				HMDH1
+doomhit2				HMDH2
+doomhit3				HMDH3
+doomhit4				HMDH4
 
 // Call of Duty: Modern Warfare
-modernwarfarehit	HMMWH
-modernwarfarekill	HMMWK
+modernwarfarehit		HMMWH
+modernwarfarekill		HMMWK
+
+// Call of Duty: Modern Warfare III
+modernwarfare3hit		HMMW3H
+modernwarfare3kill		HMMW3K
 
 // Overwatch
-overwatchhit		HMOWH
-overwatchkill		HMOWK
+overwatchhit			HMOWH
+overwatchkill			HMOWK
 
 // Quake
-quakehit			HMQH
-quakehithigh		HMQHH
-quakehitmedium		HMQHM
-quakechampionskill	HMQCK
-quakelivekill		HMQLK
+quakehit				HMQH
+quakehithigh			HMQHH
+quakehitmedium			HMQHM
+quakechampionskill		HMQCK
+quakelivekill			HMQLK
 
 // Team Fortress 2
-teamfortress2hit	HMTF2H
-teamfortress2kill	HMTF2K
+teamfortress2hit		HMTF2H
+teamfortress2kill		HMTF2K
 
 // Titanfall 2
-titanfall2kill		HMT2K
+titanfall2kill			HMT2K

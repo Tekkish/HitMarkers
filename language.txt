@@ -52,6 +52,7 @@ HM_VALUE_CALLOFDUTY4 = "Call of Duty 4";
 HM_VALUE_CALLOFDUTYBLACKOPS4 = "Call of Duty: Black Ops 4";
 HM_VALUE_CALLOFDUTYBLACKOPSCOLDWAR = "Call of Duty: Black Ops Cold War";
 HM_VALUE_CALLOFDUTYMODERNWARFARE = "Call of Duty: Modern Warfare";
+HM_VALUE_CALLOFDUTYMODERNWARFARE3 = "Call of Duty: Modern Warfare III";
 HM_VALUE_CIRCULAR = "Circular";
 HM_VALUE_CIRCULARSMALL = "Circular (Small)";
 HM_VALUE_COLORIZE = "Colorize";

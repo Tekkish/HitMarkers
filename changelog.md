@@ -1,3 +1,7 @@
+## April 25, 2026 (v1.34)
+- Added the hit and kill sounds from Call of Duty: Modern Warfare III.
+- Updated Call of Duty: Black Ops 4's kill sound to include all three variations.
+
 ## September 2, 2025 (v1.33)
 - Added a detection list to trigger hit/kill markers when damaging something that isn't an enemy.
 - Added Diamond Dragon's head hitboxes to the detection list.

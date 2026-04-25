@@ -629,6 +629,10 @@ function void hitmarkers(void)
 					sound = "blackopscoldwarhit";
 					break;
 
+				case 9:
+					sound = "modernwarfare3hit";
+					break;
+
 				default:
 					sound = hitdamage("defaulthit");
 			}
@@ -675,6 +679,10 @@ function void hitmarkers(void)
 
 					case 8:
 						sound = "blackopscoldwarkill";
+						break;
+
+					case 9:
+						sound = "modernwarfare3kill";
 						break;
 
 					default:
